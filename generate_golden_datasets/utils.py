@@ -37,8 +37,8 @@ def score_query_query(qrels: pd.DataFrame, query_embeddings_dict_1: dict, query_
     for _, row in qrels.iterrows():
         query_id = row['query-id']
         
-        col1_embedding = query_embeddings_dict_1[query_id]
-        col2_embedding = query_embeddings_dict_2[query_id]
+        col1_embedding = query_embeddings_dict_1[query_id]['embedding']
+        col2_embedding = query_embeddings_dict_2[query_id]['embedding']
         
         similarity = cosine_similarity(col1_embedding, col2_embedding).item()
         similarity_scores.append(similarity)
@@ -59,8 +59,8 @@ def score_query_corpus(qrels: pd.DataFrame, query_embeddings_dict: dict, corpus_
         query_id = row['query-id']
         corpus_id = row['corpus-id']
         
-        query_embedding = query_embeddings_dict[query_id]
-        corpus_embedding = corpus_embeddings_dict[corpus_id]
+        query_embedding = query_embeddings_dict[query_id]['embedding']
+        corpus_embedding = corpus_embeddings_dict[corpus_id]['embedding']
         
         similarity = cosine_similarity(query_embedding, corpus_embedding).item()
         similarity_scores.append(similarity)
