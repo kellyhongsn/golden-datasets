@@ -1,7 +1,10 @@
 import pytrec_eval
 from tqdm import tqdm
+import pandas as pd
+import numpy as np
+from typing import Any
 
-def get_metrics(qrels, results, k_values):
+def get_metrics(qrels: dict, results: dict, k_values: list[int]) -> dict:
     recall = dict()
     precision = dict()
     _map = dict()
@@ -37,8 +40,8 @@ def get_metrics(qrels, results, k_values):
 
     return ndcg, _map, recall, precision
 
-def evaluate(k_values, qrels_df, results_dict):
-    # Convert qrels DataFrame to expected format
+
+def evaluate(k_values: list[int], qrels_df: pd.DataFrame, results_dict: dict) -> dict:
     qrels = qrels_df.groupby("query-id").apply(lambda g: dict(zip(g["corpus-id"], g["score"]))).to_dict()
     
     qrels = {
@@ -46,7 +49,6 @@ def evaluate(k_values, qrels_df, results_dict):
         for qid, doc_dict in qrels.items()
     }
 
-    # Convert results to expected format
     results = {}
     for query_id, query_data in results_dict.items():
         results[query_id] = {}
@@ -68,7 +70,8 @@ def evaluate(k_values, qrels_df, results_dict):
     
     return final_result
 
-def get_results(collection, queries_text, queries_ids, queries_embeddings, batch_size=100):
+
+def get_results(collection: Any, queries_text: list[str], queries_ids: list[str], queries_embeddings: list[np.ndarray], batch_size: int = 100) -> dict:
     results = dict()
 
     for i in tqdm(range(0, len(queries_embeddings), batch_size), desc="Processing batches"):
@@ -92,7 +95,3 @@ def get_results(collection, queries_text, queries_ids, queries_embeddings, batch
             }
 
     return results
-
-def is_success(corpus_id, result):
-    first_id = result.split(", ")[0]
-    return corpus_id == first_id

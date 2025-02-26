@@ -1,5 +1,11 @@
+chromadb
 pandas
 numpy
 tqdm
-dotenv
 matplotlib
+datasets
+sentence-transformers
+voyageai
+openai
+anthropic
+pytrec_eval

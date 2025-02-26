@@ -1,10 +1,12 @@
 from concurrent.futures import ThreadPoolExecutor
+import os
+import multiprocessing
 from typing import List, Any
 
 def collection_add_in_batches(collection: Any, ids: List[str], texts: List[str], embeddings: List[List[float]]) -> None:
     BATCH_SIZE = 200
     LEN = len(embeddings)
-    N_THREADS = 20
+    N_THREADS = min(os.cpu_count() or multiprocessing.cpu_count(), 20)
 
     def add_batch(start: int, end: int) -> None:
         id_batch = ids[start:end]
