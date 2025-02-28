@@ -4,7 +4,7 @@ import multiprocessing
 from typing import List, Any
 
 def collection_add_in_batches(collection: Any, ids: List[str], texts: List[str], embeddings: List[List[float]]) -> None:
-    BATCH_SIZE = 200
+    BATCH_SIZE = 100
     LEN = len(embeddings)
     N_THREADS = min(os.cpu_count() or multiprocessing.cpu_count(), 20)
 
